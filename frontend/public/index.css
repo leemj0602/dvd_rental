@@ -1,0 +1,77 @@
+html,
+body {
+    margin: 0;
+    /* background: linear-gradient(60deg, #252954, #1F1D2B); */
+    /* background-image: url("./bg-masthead.jpg"); */
+    background: linear-gradient(45deg, rgb(39, 39, 89), rgb(76, 37, 104), rgb(92, 35, 92));
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    /* #252954 #1F1D2B */
+}
+
+
+/* body::before {
+    content: "";
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    right: 80%;
+    top: 20%;
+    filter: blur(100px);
+    background-color: #18B2DE;
+}
+
+body::after {
+    content: "";
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    left: 80%;
+    bottom: 20%;
+    background-color: #FB37FF;
+    filter: blur(100px);
+} */
+
+#dvd {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    grid-row-gap: 20px;
+    grid-column-gap: 20px;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.item {
+    display: flex;
+    flex-direction: column;
+    justify-self: center;
+}
+
+.item-img {
+    object-fit: cover;
+    flex-shrink: 0;
+    width: 200px;
+    height: 220px;
+    border-radius: 10px;
+    transition: 0.3s;
+    /* cursor: pointer; */
+    margin-top: 10px;
+}
+
+.item-img:hover {
+    transform: scale(1.05);
+}
+
+.item-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid white;
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 24px;
+    color: white;
+    margin-top: 10px;
+}

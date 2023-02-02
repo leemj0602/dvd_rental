@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="./index.css">
+    <title>DVD Rental</title>
+</head>
+
+<body>
+    <div class="container my-3 fs-5">
+        <h2 class="text-white">Search dvd</h2>
+        <div class="input-group search">
+            <input type="text" class="form-control rounded" id="searchString" placeholder="Search">
+            <span class="input-group-btn">
+                <button class="btn btn-default text-white" type="button" id="search">
+                    <i class="bi bi-search"></i>
+                </button>
+            </span>
+        </div>
+        <div id="dvd">
+
+        </div>
+    </div>
+
+    <!-- jquery -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <!-- popper.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <!-- bootstrap js -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <!-- axios -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!-- ajax -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script>
+        const baseUrl = "http://localhost:8081";
+
+        $(document).ready(function () {
+            $('#search').click((event) => {
+                $("#dvd").empty();
+                axios.get(`${baseUrl}/films?searchString=` + $('#searchString').val())
+                    .then((response) => {
+                        const films = response.data
+                        var dvdHtml;
+                        films.forEach((film) => {
+                            dvdHtml = `
+                            <a href="/film/${film.FID}" id="getFilmDetails">
+                                <div class="item" >
+                                    <img class="item-img"
+                                    src="https://i.ibb.co/SrNRC0b/Erkan-Erdil-angry-soviet-officer-shouting-his-soldiers8k-octane-7b802966-9d4e-4c6e-ac37-d4f751419081.png"
+                                    alt="unsplash-OG44d93i-NJk" border="0">
+                                    <div class="item-title">
+                                        <p>${film.title}</p>
+                                        <p>$${film.price}</p>
+                                    </div>
+                                </div>
+                            </a>
+                            `
+                            $('#dvd').append(dvdHtml);
+                        });
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                    });
+            });
+        });
+
+        // $('#getFilmDetails').click(async function (event) {
+        //     event.preventDefault();
+        //     await axios.get(`localhost:8081/film/${film_id}`)
+        //         .then((response) => {
+        //             const details = response.data;
+        //             localStorage.setItem("filmDetails", details);
+        //         })
+        //         .catch((error) => {
+        //             console.log(error)
+        //         })
+        // })
+    </script>
+</body>
+
+</html>
