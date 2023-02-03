@@ -15,6 +15,13 @@
 </head>
 
 <body>
+    <nav class="navbar navbar-light static-top">
+        <div class="container">
+            <a class="navbar-brand text-white" href="/index.html">DVD Rental</a>
+            <a class="btn btn-light" href="/login.html" style="border: 1;">Admin</a>
+        </div>
+    </nav>
+
     <div class="container my-3 fs-5">
         <h2 class="text-white">Search dvd</h2>
         <div class="input-group search">
@@ -56,8 +63,9 @@
                         const films = response.data
                         var dvdHtml;
                         films.forEach((film) => {
+                            // localStorage.clear();
                             dvdHtml = `
-                            <a href="/film/${film.FID}" id="getFilmDetails">
+                            <a href="/film.html?=${film.FID}" id="getFilmDetails">
                                 <div class="item" >
                                     <img class="item-img"
                                     src="https://i.ibb.co/SrNRC0b/Erkan-Erdil-angry-soviet-officer-shouting-his-soldiers8k-octane-7b802966-9d4e-4c6e-ac37-d4f751419081.png"
@@ -70,6 +78,7 @@
                             </a>
                             `
                             $('#dvd').append(dvdHtml);
+                            // $('#getFilmDetails').click(() => { localStorage.setItem("film_id", film.FID) })
                         });
                     })
                     .catch((error) => {
@@ -78,9 +87,10 @@
             });
         });
 
+
         // $('#getFilmDetails').click(async function (event) {
         //     event.preventDefault();
-        //     await axios.get(`localhost:8081/film/${film_id}`)
+        //     await axios.get(`localhost:8081/film?=${film_id}`)
         //         .then((response) => {
         //             const details = response.data;
         //             localStorage.setItem("filmDetails", details);

@@ -14,6 +14,13 @@
 </head>
 
 <body>
+    <nav class="navbar navbar-light static-top">
+        <div class="container">
+            <a class="navbar-brand" href="/index.html">DVD Rental</a>
+            <a class="btn btn-primary" href="/login.html" style="border: 1;">Admin</a>
+        </div>
+    </nav>
+
     <div id="film">
 
     </div>
@@ -38,15 +45,19 @@
 
         $(document).ready(function () {
 
-            const url = window.location.toString();
-            const film_id = parseInt(url.split("/").slice(-1)[0]);
+            const url = window.location.href;
+            const film_id = parseInt(url.split("=").slice(1));
+            // const film_id = localStorage.getItem("film_id");
 
             axios.get(`${baseUrl}/film?id=${film_id}`)
                 .then((response) => {
                     const film = response.data;
-                    $("#film").append(`
-                    <h1>${film.title}</h1>
-                `);
+                    console.log(film);
+                    film.forEach((details) => {
+                        $("#film").append(`
+                            <h1>${details.title}</h1>
+                        `);
+                    })
                 })
                 .catch((error) => {
                     console.log(error);
