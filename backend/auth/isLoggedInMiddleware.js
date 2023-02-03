@@ -1,21 +1,33 @@
 const jwt = require("jsonwebtoken");
 const JWT_SECRET = require("../config.js");
-var check = (req, res, next) => {
-    const authHeader = req.headers.authorization;
-    if (authHeader === null || authHeader === undefined || !
-        authHeader.startsWith("Bearer ")) {
-        res.status(401).send();
-        return;
+function check(req, res, next) {
+    console.log(req.headers);
+
+    //retrieve authorization header's content
+    var token = req.headers['authorization'];
+    console.log(token);
+
+    //process the token
+    if (!token || !token.includes('Bearer')) {
+        res.status(403);
+        return res.send({ auth: 'false', message: 'Not authorized!' });
     }
-    const token = authHeader.replace("Bearer ", "");
-    jwt.verify(token, JWT_SECRET, { algorithms: ["HS256"] }, (error,
-        decodedToken) => {
-        if (error) {
-            res.status(401).send();
-            return;
-        }
-        req.decodedToken = decodedToken;
-        next();
-    });
-};
+
+    else {
+        //obtain the token's value
+        token = token.split('Bearer ')[1]; 
+        console.log(token);
+
+        jwt.verify(token, JWT_SECRET.key, function (err) {
+            if (err) {
+                res.status(403);
+                return res.send({ auth: false, message: 'Not authorized!' });
+            }
+
+            else {
+                next();
+            }
+        });
+    }
+}
 module.exports = check;

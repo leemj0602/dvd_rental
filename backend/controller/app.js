@@ -7,14 +7,12 @@ Class: DIT/1B/03
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const jwt = require('jsonwebtoken');
 
 const app = express();
 const urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 const film = require('../model/film');
 const admin = require('../model/admin');
-const JWT_SECRET = require('../config');
 const isLoggedInMiddleWare = require('../auth/isLoggedInMiddleware');
 
 app.use(bodyParser.json());// parse application/json
@@ -25,8 +23,14 @@ app.use(cors());
 
 app.get('/films', function (req, res) {
     var searchString = req.query.searchString + "%";
+    var maxRental = req.query.maxRental;
 
-    film.getFilms(searchString, function (err, films) {
+    if (maxRental == undefined)
+        maxRental = 99.99;
+
+    maxRental = parseFloat(maxRental);
+
+    film.getFilms(searchString, maxRental, function (err, films) {
         if (err) {
             res.status(500).send(err);
         }
@@ -54,29 +58,64 @@ app.post('/login', function (req, res) {
     var email = req.body.email;
     var password = req.body.password;
 
-    admin.login(email, password, function (err, user) {
+    admin.login(email, password, function (err, result, token) {
         if (err) {
-            console.log(err);
-            res.status(500).send();
-            return;
+            res.status(500);
+            res.send(err.statusCode);
+        } else {
+            res.setHeader('Content-Type', 'application/json');
+            delete result[0]['password']; //clear the password in json data, do not send back to client
+            console.log('hi', result);
+            res.status(200).json({ success: true, UserData: JSON.stringify(result), token: result, status: 'You are successfully logged in!' });
         }
-        if (user === null) {
-            res.status(401).send();
-            return;
-        }
-        const payload = { staff_id: user.staff_id };
-        jwt.sign(payload, JWT_SECRET, { algorithm: "HS256" }, (error, token) => {
-            if (error) {
-                console.log(error);
-                res.status(401).send();
-                return;
-            }
-            res.status(200).send({
-                token: token,
-                staff_id: user.staff_id
-            });
-        })
-    })
+    });
 })
+
+app.post('/actor', isLoggedInMiddleWare, function (req, res) {
+    var first_name = req.body.first_name;
+    var last_name = req.body.last_name;
+
+    admin.addActor(first_name, last_name, function (err, result) {
+        if (err) {
+            res.status(500).send();
+        }
+        else {
+            res.status(201).send();
+        }
+    });
+});
+
+app.post('/customer', isLoggedInMiddleWare, function (req, res) {
+    var store_id = req.body.store_id;
+    var first_name = req.body.first_name;
+    var last_name = req.body.last_name;
+    var email = req.body.email;
+    var address = req.body.address;
+
+    var internalErr = { error_msg: "Internal server error" };
+    var existingEmail = { error_msg: "email already exist" };
+    var missingData = { error_msg: "missing data" };
+
+    admin.addCustomer(address.address_line1, address.address_line2, address.district, address.city_id, address.postal_code, address.phone, store_id, first_name, last_name, email, function (err, result) {
+        if (address.address_line1 == null || address.address_line2 == null || address.district == null || address.city_id == null || address.postal_code == null || address.phone == null || store_id == null || first_name == null || last_name == null || email == null) {
+            res.status(400).send(missingData);
+        }
+        else {
+            if (err) {
+                res.status(500).send(internalErr);
+            }
+            else {
+                if (result === null) {
+                    res.status(409).send(existingEmail);
+                }
+                else {
+                    res.status(201).send(result);
+                }
+            }
+
+        }
+    });
+});
+
 
 module.exports = app;

@@ -15,17 +15,22 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-light static-top">
+    <nav class="navbar navbar-light">
         <div class="container">
-            <a class="navbar-brand text-white" href="/index.html">DVD Rental</a>
-            <a class="btn btn-light" href="/login.html" style="border: 1;">Admin</a>
+            <div class="navbar-header">
+                <a class="navbar-brand text-white" href="/index.html">DVD Rental</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li><a class="btn btn-light" href="/login.html" style="border: 1;">Admin</a></li>
+            </ul>
         </div>
     </nav>
 
-    <div class="container my-3 fs-5">
+    <div class="container my-3">
         <h2 class="text-white">Search dvd</h2>
         <div class="input-group search">
-            <input type="text" class="form-control rounded" id="searchString" placeholder="Search">
+            <input type="text" class="form-control rounded " id="searchString" placeholder="Film Title">
+            <input type="text" class="form-control rounded" id="maxRental" placeholder="Max Price">
             <span class="input-group-btn">
                 <button class="btn btn-default text-white" type="button" id="search">
                     <i class="bi bi-search"></i>
@@ -57,22 +62,23 @@
 
         $(document).ready(function () {
             $('#search').click((event) => {
+                event.preventDefault();
                 $("#dvd").empty();
-                axios.get(`${baseUrl}/films?searchString=` + $('#searchString').val())
+                axios.get(`${baseUrl}/films?searchString=` + $('#searchString').val() + "&maxRental=" + $('#maxRental').val())
                     .then((response) => {
                         const films = response.data
                         var dvdHtml;
                         films.forEach((film) => {
                             // localStorage.clear();
                             dvdHtml = `
-                            <a href="/film.html?=${film.FID}" id="getFilmDetails">
+                            <a href="/film.html?id=${film.FID}" id="getFilmDetails">
                                 <div class="item" >
                                     <img class="item-img"
-                                    src="https://i.ibb.co/SrNRC0b/Erkan-Erdil-angry-soviet-officer-shouting-his-soldiers8k-octane-7b802966-9d4e-4c6e-ac37-d4f751419081.png"
-                                    alt="unsplash-OG44d93i-NJk" border="0">
+                                    src="http://localhost:8081/image/${film.picture}" border="0">
                                     <div class="item-title">
                                         <p>${film.title}</p>
-                                        <p>$${film.price}</p>
+                                        <p>Release year: ${film.release}</p>
+                                        <p>Rating: ${film.rating}</p>
                                     </div>
                                 </div>
                             </a>

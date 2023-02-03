@@ -1,7 +1,7 @@
 const db = require("./databaseConfig.js");
 
 const filmDB = {
-    getFilms: function (searchString, callback) {
+    getFilms: function (searchString, maxRental, callback) {
         var conn = db.getConnection();
         conn.connect(function (err) {
             if (err) {
@@ -9,9 +9,9 @@ const filmDB = {
                 return callback(err, null);
             }
             else {
-                console.log(`Search for film where title like ${searchString}`);
-                var sql = 'SELECT * FROM film_list WHERE title LIKE ?';
-                conn.query(sql, [searchString], function (err, result) {
+                console.log(`Search for film where title like ${searchString} and max rental: ${maxRental}`);
+                var sql = 'SELECT * FROM film_list WHERE title LIKE ? AND price <= ?';
+                conn.query(sql, [searchString, maxRental], function (err, result) {
                     if (err) {
                         console.log(err);
                         return callback(err, null);

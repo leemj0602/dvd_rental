@@ -21,7 +21,7 @@
         </div>
     </nav>
 
-    <div id="film">
+    <div id="film" class="container">
 
     </div>
 
@@ -52,10 +52,21 @@
             axios.get(`${baseUrl}/film?id=${film_id}`)
                 .then((response) => {
                     const film = response.data;
-                    console.log(film);
                     film.forEach((details) => {
                         $("#film").append(`
+                            <h2>Title:</h2>
                             <h1>${details.title}</h1>
+                            <h2>Category:</h2>
+                            <h3>${details.category}</h3>
+                            <h2>Release Year:</h2>
+                            <h3>${details.release}</h3>
+                            <h2>Description:</h2>
+                            <h3>${details.description}</h3>
+                            <h2>Rating:</h2>
+                            <h3>${details.rating}</h3>
+                            <h2>Actors:</h2>
+                            <h3>${details.actors}</h3>
+                            <img class="item-img" src="http://localhost:8081/image/${details.picture}" border="0">
                         `);
                     })
                 })

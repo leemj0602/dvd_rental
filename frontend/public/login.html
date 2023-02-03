@@ -14,23 +14,64 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap" rel="stylesheet">
-    <title>Document</title>
+    <title>DVD Rental</title>
 </head>
 
 <body>
     <form>
         <div class="segment">
-            <h1>Sign in</h1>
+            <h1>Log in</h1>
         </div>
 
         <label>
-            <input type="text" placeholder="Email Address" />
+            <input type="text" id="email" placeholder="Email Address" />
         </label>
         <label>
-            <input type="password" placeholder="Password" />
+            <input type="password" id="password" placeholder="Password" />
         </label>
-        <button class="red" type="button">Log in<i class="bi bi-box-arrow-in-right"></i></button>
+        <button class="red" type="button" id="login">Log in<i class="bi bi-box-arrow-in-right"></i></button>
     </form>
+
+    <!-- jquery -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <!-- popper.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <!-- bootstrap js -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <!-- axios -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!-- ajax -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script>
+        const baseUrl = "http://localhost:8081";
+
+        $(document).ready(function () {
+            localStorage.clear();
+            $('#login').click((event) => {
+                event.preventDefault();
+                const inputEmail = $('#email').val();
+                const inputPassword = $('#password').val();
+                const requestBody = {
+                    email: inputEmail,
+                    password: inputPassword
+                };
+                axios.post(`${baseUrl}/login`, requestBody)
+                    .then((response) => {
+                        localStorage.setItem('token', response.data.token);
+                        window.location.assign("/adminActor.html");
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                        window.alert("Invalid email or password!");
+                    })
+            })
+        })
+    </script>
 </body>
 
 </html>
