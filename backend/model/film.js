@@ -1,7 +1,7 @@
 const db = require("./databaseConfig.js");
 
 const filmDB = {
-    getFilms: function (searchString, maxRental, callback) {
+    getFilmsByTitle: function (searchString, maxRental, callback) {
         var conn = db.getConnection();
         conn.connect(function (err) {
             if (err) {
@@ -9,7 +9,7 @@ const filmDB = {
                 return callback(err, null);
             }
             else {
-                console.log(`Search for film where title like ${searchString} and max rental: ${maxRental}`);
+                console.log(`Search for films where title like ${searchString} and max rental: ${maxRental}`);
                 var sql = 'SELECT * FROM film_list WHERE title LIKE ? AND price <= ?';
                 conn.query(sql, [searchString, maxRental], function (err, result) {
                     if (err) {
@@ -25,6 +25,33 @@ const filmDB = {
             }
         });
     },
+
+    getFilmsByCategory: function (category, maxRental, callback) {
+        var conn = db.getConnection();
+        conn.connect(function (err) {
+            if (err) {
+                console.log(err);
+                return callback(err, null);
+            }
+            else {
+                console.log(`Search for ${category} films and max rental: ${maxRental}`);
+                var sql = 'SELECT * FROM film_list WHERE category = ? AND price <= ?';
+                conn.query(sql, [category, maxRental], function (err, result) {
+                    if (err) {
+                        console.log(err);
+                        return callback(err, null);
+                    }
+                    else {
+                        console.log(result);
+                        return callback(null, result);
+                    }
+                });
+                conn.end();
+            }
+        });
+
+    },
+
     getFilm: function (film_id, callback) {
         var conn = db.getConnection();
         conn.connect(function (err) {
@@ -50,30 +77,6 @@ const filmDB = {
             }
         });
     }
-    // getFilm: function (film_id, callback) {
-    //     var conn = db.getConnection();
-    //     conn.connect(function (err) {
-    //         if (err) {
-    //             console.log(err);
-    //             return callback(err, null);
-    //         }
-    //         else {
-    //             console.log("get film id " + film_id);
-    //             var sql = "SELECT * FROM film WHERE film_id = ?";
-    //             conn.query(sql, [film_id], function (err, result) {
-    //                 if (err) {
-    //                     console.log(err);
-    //                     return callback(err, null);
-    //                 }
-    //                 else {
-    //                     console.log(result);
-    //                     return callback(null, result);
-    //                 }
-    //             });
-    //         }
-    //     });
-    // }
-
 }
 
 module.exports = filmDB;

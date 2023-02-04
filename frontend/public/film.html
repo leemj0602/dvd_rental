@@ -10,70 +10,117 @@
         integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="./film.css">
     <title>DVD Rental</title>
 </head>
 
 <body>
-    <nav class="navbar navbar-light static-top">
-        <div class="container">
-            <a class="navbar-brand" href="/index.html">DVD Rental</a>
-            <a class="btn btn-primary" href="/login.html" style="border: 1;">Admin</a>
+    <header class="sticky-top">
+        <nav class="navbar navbar-expand-md navbar-dark bg-dark py-3">
+            <div class="container">
+                <a class="navbar-brand" href="#">DVD Rental</a>
+                <!-- hamburger menu when navbar is collapsed
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
+                    aria-controls="navbarText" aria-expanded="false" aria-label="Toggle">
+                    <span class="navbar-toggler-icon"></span>
+                </button> -->
+                <div class="expand navbar-expand" id="navbarText">
+                    <!-- navbar items -->
+                    <ul class="navbar-nav ms-auto text-center fs-5">
+                        <li class="nav-item ps-2">
+                            <a class="nav-link" href="#">Search Title</a>
+                        </li>
+                        <li class="nav-item ps-2">
+                            <a class="nav-link" href="#">Search Category</a>
+                        </li>
+                        <li class="nav-item ps-4">
+                            <a class="nav-link" href="#">Admin<i class="bi bi-box-arrow-in-right"></i></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div id="film" class="container">
+
         </div>
-    </nav>
 
-    <div id="film" class="container">
+        <!-- jquery -->
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+        <!-- popper.js -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+        <!-- bootstrap js -->
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+        <!-- axios -->
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <!-- ajax -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script>
+            const baseUrl = "http://localhost:8081";
 
-    </div>
+            $(document).ready(function () {
 
-    <!-- jquery -->
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
-        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-    <!-- popper.js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-        crossorigin="anonymous"></script>
-    <!-- bootstrap js -->
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-        crossorigin="anonymous"></script>
-    <!-- axios -->
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <!-- ajax -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script>
-        const baseUrl = "http://localhost:8081";
+                const url = window.location.href;
+                const film_id = parseInt(url.split("=").slice(1));
+                // const film_id = localStorage.getItem("film_id");
 
-        $(document).ready(function () {
-
-            const url = window.location.href;
-            const film_id = parseInt(url.split("=").slice(1));
-            // const film_id = localStorage.getItem("film_id");
-
-            axios.get(`${baseUrl}/film?id=${film_id}`)
-                .then((response) => {
-                    const film = response.data;
-                    film.forEach((details) => {
-                        $("#film").append(`
-                            <h2>Title:</h2>
-                            <h1>${details.title}</h1>
-                            <h2>Category:</h2>
-                            <h3>${details.category}</h3>
-                            <h2>Release Year:</h2>
-                            <h3>${details.release}</h3>
-                            <h2>Description:</h2>
-                            <h3>${details.description}</h3>
-                            <h2>Rating:</h2>
-                            <h3>${details.rating}</h3>
-                            <h2>Actors:</h2>
-                            <h3>${details.actors}</h3>
-                            <img class="item-img" src="http://localhost:8081/image/${details.picture}" border="0">
-                        `);
+                axios.get(`${baseUrl}/film?id=${film_id}`)
+                    .then((response) => {
+                        const film = response.data;
+                        var filmHtml
+                        film.forEach((details) => {
+                            filmHtml = `        
+                        <div class="row">
+                            <div class="info col-lg-7">
+                                <h1 class="info-title">${details.title}</h1>
+                                <br>
+                                <div class="info-row">
+                                    <div class="info-row-category">
+                                        <h4>Category:</h4>
+                                        <h5 class="info-category">${details.category}</h5>
+                                    </div>
+                                    <div class="info-row-release">
+                                        <h4>Release:</h4>
+                                        <h5 class="info-release">${details.release}</h5>
+                                    </div>
+                                    <div class="info-row-rating">
+                                        <h4>Rating:</h4>
+                                        <h5 class="info-rating">${details.rating}</h5>
+                                    </div>
+                                    <div class="info-rating-length">
+                                        <h4>Length:</h4>
+                                        <h5 class="info-rating">${details.length} Minutes</h5>
+                                    </div>
+                                    <div class="info-row-price">
+                                        <h4>Price:</h4>
+                                        <h5>$${details.price}</h5>
+                                    </div>
+                                </div>
+                                <br>
+                                <h4>Description:</h4>
+                                <h5 class="info-description">${details.description}</h5>
+                                <br>
+                                <h4>Actors:</h4>
+                                <h5 class="info-rating">${details.actors}</h5>
+                                <br>
+                            </div>
+                            <div class="display col-lg-5">
+                                <img class="display-picture" src="http://localhost:8081/image/${details.picture}" style="width:525px; height:525px; border-radius: 20px;;">
+                            </div>
+                        </div>
+`
+                            $("#film").append(filmHtml);
+                        })
                     })
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
-        });
+                    .catch((error) => {
+                        console.log(error);
+                    });
+            });
 
         // $(document).ready(function () {
         //     const film = localStorage.getItem("filmDetails");
@@ -81,7 +128,7 @@
         //     <h1>${film.title}</h1>
         //     `)
         // });
-    </script>
+        </script>
 </body>
 
 </html>

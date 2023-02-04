@@ -13,6 +13,7 @@ const urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 const film = require('../model/film');
 const admin = require('../model/admin');
+const category = require('../model/category');
 const isLoggedInMiddleWare = require('../auth/isLoggedInMiddleware');
 
 app.use(bodyParser.json());// parse application/json
@@ -21,7 +22,7 @@ app.options('*', cors());
 app.use(cors());
 
 
-app.get('/films', function (req, res) {
+app.get('/filmsByTitle', function (req, res) {
     var searchString = req.query.searchString + "%";
     var maxRental = req.query.maxRental;
 
@@ -30,7 +31,7 @@ app.get('/films', function (req, res) {
 
     maxRental = parseFloat(maxRental);
 
-    film.getFilms(searchString, maxRental, function (err, films) {
+    film.getFilmsByTitle(searchString, maxRental, function (err, films) {
         if (err) {
             res.status(500).send(err);
         }
@@ -39,6 +40,26 @@ app.get('/films', function (req, res) {
         }
     });
 });
+
+app.get('/filmsByCategory', function (req, res) {
+    var category = req.query.category;
+    var maxRental = req.query.maxRental;
+
+    if (maxRental == undefined)
+        maxRental = 99.99;
+
+    maxRental = parseFloat(maxRental);
+
+    film.getFilmsByCategory(category, maxRental, function (err, films) {
+        if (err) {
+            res.status(500).send();
+        }
+        else {
+            res.status(200).send(films);
+        }
+    })
+
+})
 
 app.get('/film', function (req, res) {
     var id = req.query.id;
@@ -51,8 +72,20 @@ app.get('/film', function (req, res) {
         else {
             res.status(200).send(film);
         }
-    })
-})
+    });
+});
+
+app.get('/categories', function (req, res) {
+
+    category.getCategory(function (err, categories) {
+        if (err) {
+            res.status(500).send();
+        }
+        else {
+            res.status(200).send(categories);
+        }
+    });
+});
 
 app.post('/login', function (req, res) {
     var email = req.body.email;
@@ -69,7 +102,7 @@ app.post('/login', function (req, res) {
             res.status(200).json({ success: true, UserData: JSON.stringify(result), token: result, status: 'You are successfully logged in!' });
         }
     });
-})
+});
 
 app.post('/actor', isLoggedInMiddleWare, function (req, res) {
     var first_name = req.body.first_name;

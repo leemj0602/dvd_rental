@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="./searchFilms.css">
+    <title>DVD Rental</title>
+</head>
+
+<body>
+    <header class="sticky-top">
+        <nav class="navbar navbar-expand-md navbar-dark bg-dark py-3">
+            <div class="container">
+                <a class="navbar-brand" href="index.html">DVD Rental</a>
+                <!-- hamburger menu when navbar is collapsed
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
+                    aria-controls="navbarText" aria-expanded="false" aria-label="Toggle">
+                    <span class="navbar-toggler-icon"></span>
+                </button> -->
+                <div class="expand navbar-expand" id="navbarText">
+                    <!-- navbar items -->
+                    <ul class="navbar-nav ms-auto text-center fs-5">
+                        <li class="nav-item ps-2">
+                            <a class="nav-link" href="/searchTitle.html">Search Title</a>
+                        </li>
+                        <li class="nav-item ps-2">
+                            <a class="nav-link active" href="/searchCategory.html">Search Category</a>
+                        </li>
+                        <li class="nav-item ps-4">
+                            <a class="nav-link" href="/login.html">Admin<i class="bi bi-box-arrow-in-right"></i></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container my-3">
+        <h2 class="text-white">Search DVD By Category</h2>
+        <div class="input-group search_select_box">
+            <select class="rounded" id="categories">
+
+            </select>
+            <input type="text" class="rounded" id="maxRental" placeholder="Max Price">
+            <span class="input-group-btn">
+                <button class="btn btn-default text-white" type="button" id="search">
+                    <i class="bi bi-search"></i>
+                </button>
+            </span>
+        </div>
+        <div id="dvd">
+
+        </div>
+    </div>
+
+    <!-- jquery -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <!-- popper.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <!-- bootstrap js -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <!-- axios -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!-- ajax -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script>
+        const baseUrl = "http://localhost:8081";
+
+        $(document).ready(function () {
+            axios.get(`${baseUrl}/categories`)
+                .then((response) => {
+                    categories = response.data;
+                    categories.forEach((category) => {
+                        $('#categories').append(`
+                        <option>${category.name}</option>
+                    `);
+                    })
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+            $('#search').click((event) => {
+                event.preventDefault();
+                $('#dvd').empty();
+                var maxRental = $('#maxRental').val();
+                if (maxRental == '') {
+                    maxRental = 99.99;
+                }
+                axios.get(`${baseUrl}/filmsByCategory?category=${$('#categories').val()}&maxRental=${maxRental}`)
+                    .then((response) => {
+                        const films = response.data
+                        var dvdHtml;
+                        films.forEach((film) => {
+                            dvdHtml = `
+                            <a href="/film.html?id=${film.FID}" id="getFilmDetails">
+                                <div class="item">
+                                    <img class="item-img"
+                                    src="http://localhost:8081/image/${film.picture}" border="0">
+                                    <div class="item-title">
+                                        <p>${film.title}</p>
+                                        <p>Release year: ${film.release}</p>
+                                        <p>Rating: ${film.rating}</p>
+                                        <p>Rental: $${film.price}</p>
+                                    </div>
+                                </div>
+                            </a>
+                            `
+                            $('#dvd').append(dvdHtml);
+                        });
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                    });
+            });
+
+        });
+    </script>
+</body>
+
+</html>

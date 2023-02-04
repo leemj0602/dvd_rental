@@ -1,0 +1,62 @@
+html,
+body {
+    margin: 0;
+    background: linear-gradient(45deg, rgb(39, 39, 89), rgb(76, 37, 104), rgb(92, 35, 92));
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    font-family: 'Poppins';
+    color: white;
+}
+
+#film {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 50px;
+}
+
+#film .info {
+    animation-name: leftslide;
+    animation-duration: 0.8s;
+}
+
+#film .display {
+    animation-name: rightslide;
+    animation-duration: 0.8s;
+    padding: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: linear-gradient(-60deg, rgba(0, 47, 255, 0.08) 1.85%, rgba(174, 0, 255, 0.08) 98.72%);
+    border-radius: 35px;
+}
+
+#film .info .info-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 10px;
+    padding-right: 50px;
+}
+
+h4 {
+    font-weight: bold;
+}
+
+@keyframes leftslide {
+    from {
+        transform: translateX(-700px);
+    }
+
+    to {
+        transform: translateX(0px);
+    }
+}
+
+@keyframes rightslide {
+    from {
+        transform: translateX(550px);
+    }
+
+    to {
+        transform: translateX(0px);
+    }
+}
