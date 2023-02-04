@@ -98,7 +98,7 @@ app.post('/login', function (req, res) {
         } else {
             res.setHeader('Content-Type', 'application/json');
             delete result[0]['password']; //clear the password in json data, do not send back to client
-            console.log('hi', result);
+            console.log(result);
             res.status(200).json({ success: true, UserData: JSON.stringify(result), token: result, status: 'You are successfully logged in!' });
         }
     });
@@ -113,7 +113,20 @@ app.post('/actor', isLoggedInMiddleWare, function (req, res) {
             res.status(500).send();
         }
         else {
-            res.status(201).send();
+            res.status(201).send(result);
+        }
+    });
+});
+
+app.get('/checkEmail', function (req, res) {
+    var email = req.query.email;
+
+    admin.checkEmail(email, function (err, result) {
+        if (err) {
+            res.status(500).send();
+        }
+        else {
+            res.status(200).send(result);
         }
     });
 });

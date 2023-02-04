@@ -67,6 +67,30 @@ const adminDB = {
         });
     },
 
+    checkEmail: function (email, callback) {
+        var conn = db.getConnection();
+        conn.connect(function (err) {
+            if (err) {
+                console.log(err);
+                return callback(err, null);
+            }
+            else {
+                console.log(`Check if email: ${email} exists`);
+                var sql = "SELECT * FROM customer WHERE email = ?";
+                conn.query(sql, [email], function (err, result) {
+                    if (err) {
+                        console.log(err);
+                        return callback(err, null);
+                    }
+                    else {
+                        console.log(result);
+                        return callback(null, result);
+                    }
+                });
+            }
+        });
+    },
+
     addCustomer: function (address_line1, address_line2, district, city_id, postal_code, phone, store_id, first_name, last_name, email, callback) {
         var conn = db.getConnection();
         conn.connect(function (err) {
@@ -76,7 +100,6 @@ const adminDB = {
             }
             else {
                 console.log("Add customer");
-                var sqlEmailCheck = "SELECT * FROM customer WHERE email = ?";
                 var sqlInsert = "INSERT INTO address (address, address2, district, city_id, postal_code, phone) values (?, ?, ?, ?, ?, ?); INSERT INTO customer (store_id, first_name, last_name, email, address_id) values (?, ?, ?, ?, (SELECT MAX(address_id) FROM address))"
                 if (address_line1 == null || address_line2 == null || district == null || city_id == null || postal_code == null || phone == null || store_id == null || first_name == null || last_name == null || email == null) {
                     console.log(err);

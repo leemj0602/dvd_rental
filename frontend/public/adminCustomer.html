@@ -14,13 +14,32 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-default">
-        <div class="container">
-            <a class="nav-link" href="/adminActor.html">Actors</a>
-            <a class="nav-link" href="/adminCustomer.html">Customers</a>
-            <a class="btn btn-primary" href="/login.html" style="border: 1;">Log out</a>
-        </div>
-    </nav>
+    <header class="sticky-top">
+        <nav class="navbar navbar-expand-md navbar-dark bg-dark py-3">
+            <div class="container">
+                <a class="navbar-brand" href="/index.html">DVD Rental</a>
+                <!-- hamburger menu when navbar is collapsed
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
+                    aria-controls="navbarText" aria-expanded="false" aria-label="Toggle">
+                    <span class="navbar-toggler-icon"></span>
+                </button> -->
+                <div class="expand navbar-expand" id="navbarText">
+                    <!-- navbar items -->
+                    <ul class="navbar-nav ms-auto text-center fs-5">
+                        <li class="nav-item ps-2">
+                            <a class="nav-link" href="/adminActor.html">Add Actor</a>
+                        </li>
+                        <li class="nav-item ps-2">
+                            <a class="nav-link active" href="/adminCustomer.html">Add Customer</a>
+                        </li>
+                        <li class="nav-item ps-4">
+                            <a class="nav-link" href="/index.html">Logout<i class="bi bi-box-arrow-in-right"></i></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
 
     <div class="container my-3">
         <h2>Add Customer</h2>
@@ -100,23 +119,31 @@
                         }
                     }
                     if (store_id != '' && firstName && lastName != '' && email != '' && address1 != '' /*&& address2 != ''*/ && district != '' && city_id != '' && postal != '' && phone != '') {
-                        axios.post(`${baseUrl}/customer`, requestBody, { headers: { "Authorization": "Bearer " + token } })
+                        axios.get(`${baseUrl}/checkEmail?email=${email}`)
                             .then((response) => {
-                                window.alert("Customer added!");
-                                $('#store_id').val('');
-                                $('#first_name').val('');
-                                $('#last_name').val('');
-                                $('#email').val('');
-                                $('#address_1').val('');
-                                $('#address_2').val('');
-                                $('#district').val('');
-                                $('#cityID').val('');
-                                $('#postal').val('');
-                                $('#phone').val('');
+                                if (response.data === null) {
+                                    axios.post(`${baseUrl}/customer`, requestBody, { headers: { "Authorization": "Bearer " + token } })
+                                        .then((response) => {
+                                            window.alert("Customer added!");
+                                            $('#store_id').val('');
+                                            $('#first_name').val('');
+                                            $('#last_name').val('');
+                                            $('#email').val('');
+                                            $('#address_1').val('');
+                                            $('#address_2').val('');
+                                            $('#district').val('');
+                                            $('#cityID').val('');
+                                            $('#postal').val('');
+                                            $('#phone').val('');
 
-                            })
-                            .catch((error) => {
-                                console.log(error);
+                                        })
+                                        .catch((error) => {
+                                            console.log(error);
+                                        })
+                                }
+                                else{
+                                    window.alert("Customer's email already exists, try again!")
+                                }
                             })
                     }
                     else {
