@@ -63,7 +63,7 @@
                 axios.post(`${baseUrl}/login`, requestBody)
                     .then((response) => {
                         localStorage.setItem('token', response.data.token);
-                        window.location.assign("/adminActor.html");
+                        window.location.assign("/admin.html");
                     })
                     .catch((error) => {
                         console.log(error);
