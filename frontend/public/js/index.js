@@ -1,3 +1,9 @@
+/*
+Name: Lee Mun Jun
+Admin No.: p2227762
+Class: DIT/1B/03
+*/
+
 ; (function () {
     const $logo = document.querySelector('.logo');
 

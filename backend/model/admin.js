@@ -1,3 +1,9 @@
+/*
+Name: Lee Mun Jun
+Admin No.: p2227762
+Class: DIT/1B/03
+*/
+
 var db = require('./databaseConfig');
 var config = require('../config.js');
 var jwt = require('jsonwebtoken');
