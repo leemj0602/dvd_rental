@@ -83,13 +83,16 @@ body {
     }
 }
 
-div.col{
-    border: 1px solid white;
-    font-size: 25px;
-}
-
-a.button{
+a.button {
     text-decoration: none;
     color: white;
     position: relative;
+    border: 1px solid black;
+    border-radius: 10px;
+    font-size: 25px;
+    padding: 10px;
+}
+
+a.button:hover {
+    color: yellow;
 }

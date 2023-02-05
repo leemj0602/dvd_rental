@@ -16,25 +16,13 @@ button {
     font-size: 16px;
 }
 
-div,
-p {
+div {
     color: black;
-    text-shadow: 1px 1px 1px #fff;
-}
-
-form {
-    padding: 16px;
-    width: 320px;
-    margin: 0 auto;
-}
-
-.segment {
-    padding: 32px 0;
-    text-align: center;
 }
 
 button,
-input,select {
+input,
+select {
     border: 0;
     outline: 0;
     font-size: 16px;
@@ -50,7 +38,8 @@ label {
     width: 100%;
 }
 
-input,select {
+input,
+select {
     margin-right: 8px;
     box-shadow: inset 2px 2px 5px #babecc, inset -5px -5px 10px #fff;
     width: 100%;
@@ -85,26 +74,6 @@ button:active {
     box-shadow: inset 1px 1px 2px #babecc, inset -1px -1px 2px #fff;
 }
 
-button .icon {
-    margin-right: 8px;
-}
-
-button.unit {
-    border-radius: 8px;
-    line-height: 0;
-    width: 48px;
-    height: 48px;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0 8px;
-    font-size: 19.2px;
-}
-
-button.unit .icon {
-    margin-right: 0;
-}
-
 button.green {
     display: block;
     width: 10%;
@@ -115,9 +84,4 @@ button.green {
     display: flex;
     align-items: center;
     justify-content: flex-start;
-}
-
-.input-group label {
-    margin: 0;
-    flex: 1;
 }

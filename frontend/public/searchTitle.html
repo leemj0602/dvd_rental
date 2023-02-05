@@ -43,10 +43,10 @@
     </header>
 
     <div class="container my-3">
-        <h2 class="text-white">Search DVD By Title</h2>
+        <h1 class="text-white">Search DVD By Title</h1>
         <div class="input-group search">
-            <input type="text" class="form-control rounded " id="searchString" placeholder="Film Title">
-            <input type="text" class="rounded" id="maxRental" placeholder="Max Price">
+            <input type="text" class="form-control rounded" id="searchString" placeholder="Film Title" style="width: 80%;">
+            <input type="number" class="form-control rounded" id="maxRental" placeholder="Max Price" style="width: 15%;">
             <span class="input-group-btn">
                 <button class="btn btn-default text-white" type="button" id="search">
                     <i class="bi bi-search"></i>
@@ -86,6 +86,9 @@
                 }
                 axios.get(`${baseUrl}/filmsByTitle?searchString=${$('#searchString').val()}&maxRental=${maxRental}`)
                     .then((response) => {
+                        if (response.data == '') {
+                            $('#dvd').append(`<h2>No results found!</h2>`);
+                        }
                         const films = response.data
                         var dvdHtml;
                         films.forEach((film) => {

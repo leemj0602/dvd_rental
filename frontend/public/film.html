@@ -19,13 +19,7 @@
         <nav class="navbar navbar-expand-md navbar-dark bg-dark py-3">
             <div class="container">
                 <a class="navbar-brand" href="/index.html">DVD Rental</a>
-                <!-- hamburger menu when navbar is collapsed
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
-                    aria-controls="navbarText" aria-expanded="false" aria-label="Toggle">
-                    <span class="navbar-toggler-icon"></span>
-                </button> -->
                 <div class="expand navbar-expand" id="navbarText">
-                    <!-- navbar items -->
                     <ul class="navbar-nav ms-auto text-center fs-5">
                         <li class="nav-item ps-2">
                             <a class="nav-link" href="/searchTitle.html">Search Title</a>
@@ -67,7 +61,6 @@
 
                 const url = window.location.href;
                 const film_id = parseInt(url.split("=").slice(1));
-                // const film_id = localStorage.getItem("film_id");
 
                 axios.get(`${baseUrl}/film?id=${film_id}`)
                     .then((response) => {
@@ -121,13 +114,6 @@
                         console.log(error);
                     });
             });
-
-        // $(document).ready(function () {
-        //     const film = localStorage.getItem("filmDetails");
-        //     $("#film").append(`
-        //     <h1>${film.title}</h1>
-        //     `)
-        // });
         </script>
 </body>
 

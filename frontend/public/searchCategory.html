@@ -19,13 +19,7 @@
         <nav class="navbar navbar-expand-md navbar-dark bg-dark py-3">
             <div class="container">
                 <a class="navbar-brand" href="index.html">DVD Rental</a>
-                <!-- hamburger menu when navbar is collapsed
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
-                    aria-controls="navbarText" aria-expanded="false" aria-label="Toggle">
-                    <span class="navbar-toggler-icon"></span>
-                </button> -->
                 <div class="expand navbar-expand" id="navbarText">
-                    <!-- navbar items -->
                     <ul class="navbar-nav ms-auto text-center fs-5">
                         <li class="nav-item ps-2">
                             <a class="nav-link" href="/searchTitle.html">Search Title</a>
@@ -43,12 +37,12 @@
     </header>
 
     <div class="container my-3">
-        <h2 class="text-white">Search DVD By Category</h2>
-        <div class="input-group search_select_box">
-            <select class="rounded" id="categories">
+        <h1 class="text-white">Search DVD By Category</h1>
+        <div class="input-group search">
+            <select class="form-control rounded" id="categories" style="width:80%;">
 
             </select>
-            <input type="text" class="rounded" id="maxRental" placeholder="Max Price">
+            <input type="number" class="form-control rounded" id="maxRental" placeholder="Max Price" style="width:15%;">
             <span class="input-group-btn">
                 <button class="btn btn-default text-white" type="button" id="search">
                     <i class="bi bi-search"></i>
@@ -100,6 +94,9 @@
                 }
                 axios.get(`${baseUrl}/filmsByCategory?category=${$('#categories').val()}&maxRental=${maxRental}`)
                     .then((response) => {
+                        if (response.data == '') {
+                            $('#dvd').append(`<h2>No results found!</h2>`);
+                        }
                         const films = response.data
                         var dvdHtml;
                         films.forEach((film) => {
