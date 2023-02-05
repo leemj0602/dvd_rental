@@ -1,9 +1,3 @@
-/*
-Name: Lee Mun Jun
-Admin No.: p2227762
-Class: DIT/1B/03
-*/
-
 html,
 body {
     margin: 0;
@@ -21,18 +15,24 @@ body {
     margin-top: 50px;
 }
 
-#film .info {
+.info {
     animation-name: leftslide;
     animation-duration: 0.8s;
 }
 
-#film .display {
+.display {
     animation-name: rightslide;
     animation-duration: 0.8s;
     padding: 14px;
     border: 1px solid rgba(255, 255, 255, 0.2);
     background: linear-gradient(-60deg, rgba(0, 47, 255, 0.08) 1.85%, rgba(174, 0, 255, 0.08) 98.72%);
     border-radius: 35px;
+}
+
+.display-picture {
+    width: 525px;
+    height: 525px;
+    border-radius: 20px;
 }
 
 #film .info .info-row {

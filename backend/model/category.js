@@ -27,6 +27,7 @@ const catDB = {
                         return callback(null, result);
                     }
                 });
+                conn.end();
             }
         });
     },

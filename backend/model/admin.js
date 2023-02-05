@@ -93,6 +93,7 @@ const adminDB = {
                         return callback(null, result);
                     }
                 });
+                conn.end();
             }
         });
     },

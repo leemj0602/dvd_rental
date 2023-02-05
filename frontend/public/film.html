@@ -40,42 +40,42 @@ Class: DIT/1B/03
                 </div>
             </div>
         </nav>
+    </header>
+    <div id="film" class="container">
 
-        <div id="film" class="container">
+    </div>
 
-        </div>
+    <!-- jquery -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <!-- popper.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <!-- bootstrap js -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <!-- axios -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!-- ajax -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script>
+        const baseUrl = "http://localhost:8081";
 
-        <!-- jquery -->
-        <script src="https://code.jquery.com/jquery-3.3.1.min.js"
-            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-        <!-- popper.js -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-            crossorigin="anonymous"></script>
-        <!-- bootstrap js -->
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-            crossorigin="anonymous"></script>
-        <!-- axios -->
-        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-        <!-- ajax -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-        <script>
-            const baseUrl = "http://localhost:8081";
+        $(document).ready(function () {
 
-            $(document).ready(function () {
+            const url = window.location.href;
+            const film_id = parseInt(url.split("=").slice(1));
 
-                const url = window.location.href;
-                const film_id = parseInt(url.split("=").slice(1));
-
-                axios.get(`${baseUrl}/film?id=${film_id}`)
-                    .then((response) => {
-                        const film = response.data;
-                        var filmHtml
-                        film.forEach((details) => {
-                            filmHtml = `        
+            axios.get(`${baseUrl}/film?id=${film_id}`)
+                .then((response) => {
+                    const film = response.data;
+                    var filmHtml
+                    film.forEach((details) => {
+                        filmHtml = `        
                         <div class="row">
-                            <div class="info col-lg-7">
+                            <div class="info col-lg-7 col-12">
                                 <h1 class="info-title">${details.title}</h1>
                                 <br>
                                 <div class="info-row">
@@ -107,20 +107,21 @@ Class: DIT/1B/03
                                 <h4>Actors:</h4>
                                 <h5 class="info-rating">${details.actors}</h5>
                                 <br>
+                                <a href="/reviews.html?id=${details.FID}"><h4>Reviews</h4></a>
                             </div>
-                            <div class="display col-lg-5">
-                                <img class="display-picture" src="http://localhost:8081/image/${details.picture}" style="width:525px; height:525px; border-radius: 20px;;">
+                            <div class="display col-lg-5 col-12">
+                                <img class="display-picture" src="http://localhost:8081/image/${details.picture}">
                             </div>
                         </div>
 `
-                            $("#film").append(filmHtml);
-                        })
+                        $("#film").append(filmHtml);
                     })
-                    .catch((error) => {
-                        console.log(error);
-                    });
-            });
-        </script>
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        });
+    </script>
 </body>
 
 </html>

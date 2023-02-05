@@ -1,0 +1,16 @@
+html,
+body {
+    margin: 0;
+    background: linear-gradient(45deg, rgb(39, 39, 89), rgb(76, 37, 104), rgb(92, 35, 92));
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    font-family: 'Poppins';
+}
+
+h1, label {
+    color: white;
+}
+
+p {
+    font-size: 20px;
+}

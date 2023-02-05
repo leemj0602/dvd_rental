@@ -14,6 +14,7 @@ const urlencodedParser = bodyParser.urlencoded({ extended: false });
 const film = require('../model/film');
 const admin = require('../model/admin');
 const category = require('../model/category');
+const review = require('../model/review');
 const isLoggedInMiddleWare = require('../auth/isLoggedInMiddleware');
 
 app.use(bodyParser.json());// parse application/json
@@ -76,13 +77,53 @@ app.get('/film', function (req, res) {
 });
 
 app.get('/categories', function (req, res) {
-
     category.getCategory(function (err, categories) {
         if (err) {
             res.status(500).send();
         }
         else {
             res.status(200).send(categories);
+        }
+    });
+});
+
+app.get('/reviews', function (req, res) {
+    var film_id = req.query.film_id;
+
+    review.getReviewByFilmID(film_id, function (err, review) {
+        if (err) {
+            res.status(500).send();
+        }
+        else {
+            res.status(200).send(review);
+        }
+    });
+});
+
+app.get('/review', function (req, res) {
+    var review_id = req.query.review_id;
+
+    review.getReviewByReviewID(review_id, function (err, review) {
+        if (err) {
+            res.status(500).send();
+        }
+        else {
+            res.status(200).send(review);
+        }
+    });
+});
+
+app.post('/review', function (req, res) {
+    var film_id = req.body.film_id;
+    var rating = req.body.rating;
+    var comment = req.body.comment;
+
+    review.addReview(film_id, rating, comment, function (err, result) {
+        if (err) {
+            res.status(500).send();
+        }
+        else {
+            res.status(200).send(result);
         }
     });
 });
